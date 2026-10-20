@@ -5,23 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mekegiyim - Online Giyim Mağazası</title>
     <style>
-        :root { --primary: #111; --accent: #e74c3c; --success: #2ecc71; }
+        :root { --primary: #111; --accent: #e74c3c; --success: #2ecc71; --instagram: #e1306c; }
         body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; color: #333; }
         header { background: var(--primary); color: white; padding: 15px 20px; text-align: center; position: relative; }
         header h1 { margin: 0; font-size: 28px; letter-spacing: 2px; }
-        .contact-bar { background: #eeefef; text-align: center; padding: 8px; font-size: 13px; font-weight: bold; }
-        .contact-bar a { color: #333; margin: 0 10px; text-decoration: none; }
         
+        /* İletişim ve Sosyal Medya Barı */
+        .contact-bar { background: #eeefef; text-align: center; padding: 10px; font-size: 13px; font-weight: bold; border-bottom: 1px solid #ddd; }
+        .contact-bar a { color: #333; margin: 0 10px; text-decoration: none; display: inline-block; }
+        .instagram-btn { background: var(--instagram); color: white !important; padding: 3px 10px; border-radius: 20px; font-size: 12px; }
+        
+        /* Mağaza ve Ürün Alanı */
         .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
         .product-card { background: white; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; position: relative; display: flex; flex-direction: column; }
         
+        /* İndirim Rozeti */
         .discount-badge { position: absolute; top: 15px; left: 15px; background: var(--accent); color: white; padding: 5px 10px; font-weight: bold; font-size: 12px; border-radius: 3px; z-index: 2; }
         
         .product-img { width: 100%; height: 350px; background: #eee; object-fit: cover; }
         .product-info { padding: 15px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .product-title { font-size: 18px; margin: 10px 0; font-weight: 600; }
         
+        /* Fiyat Alanı */
         .price-box { margin: 10px 0; }
         .old-price { text-decoration: line-through; color: #999; font-size: 14px; margin-right: 8px; }
         .current-price { color: var(--accent); font-weight: bold; font-size: 20px; }
@@ -29,68 +35,46 @@
         .wp-btn { display: block; background: var(--success); color: white; text-decoration: none; padding: 10px; border-radius: 5px; font-weight: bold; margin-top: 10px; transition: 0.2s; }
         .wp-btn:hover { background: #27ae60; }
 
+        /* Ödeme Bilgisi */
         .payment-info { background: white; padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 5px solid var(--primary); }
-
-        .admin-toggle { position: absolute; right: 20px; top: 20px; background: #333; color: white; border: 1px solid white; padding: 5px 10px; cursor: pointer; border-radius: 4px; }
-        .admin-panel { display: none; background: #222; color: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; }
-        .admin-panel input, .admin-panel select, .admin-panel button { padding: 8px; margin: 5px; border-radius: 4px; border: none; }
-        .admin-panel button { background: var(--success); color: white; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>MEKEGİYİM</h1>
-        <button class="admin-toggle" onclick="toggleAdmin()">Yönetim Paneli</button>
     </header>
 
+    <!-- 🌐 BURADAN TELEFON VE INSTAGRAM HESABINIZI DEĞİŞTİREBİLİRSİNİZ -->
     <div class="contact-bar">
         📞 Sipariş Hatlarımız: 
-        <a href="https://wa.me/905551112233">0555 111 22 33</a> | 
-        <a href="https://wa.me/905554445566">0555 444 55 66</a> | 
-        <a href="https://wa.me/905557778899">0555 777 88 99</a>
+        <a href="https://wa.me">0555 111 22 33</a> | 
+        <a href="https://wa.me">0555 444 55 66</a> | 
+        <a href="https://wa.me">0555 777 88 99</a> |
+        <a href="https://instagram.com" target="_blank" class="instagram-btn">📸 @mekegiyim Takip Et</a>
     </div>
 
     <div class="container">
-        
-        <div id="adminPanel" class="admin-panel">
-            <div id="loginArea">
-                <h3>Yönetici Girişi</h3>
-                <input type="text" id="username" placeholder="Kullanıcı Adı">
-                <input type="password" id="password" placeholder="Şifre">
-                <button onclick="login()">Giriş Yap</button>
-            </div>
-            <div id="controlArea" style="display:none;">
-                <h3>Ürün Düzenleme Paneli</h3>
-                <p>Mevcut ürünü güncelle veya yeni fiyat/indirim belirle:</p>
-                <select id="selectProduct" onchange="loadProductData()">
-                    <option value="0">Oversize Siyah Tişört</option>
-                    <option value="1">Kargo Cep Pantolon</option>
-                </select>
-                <input type="number" id="newPrice" placeholder="Normal Fiyat (TL)">
-                <input type="number" id="newDiscount" placeholder="İndirim Yüzdesi (%)" min="0" max="100">
-                <button onclick="updateProduct()">Değişiklikleri Kaydet</button>
-                <button onclick="logout()" style="background:#c0392b;">Çıkış Yap</button>
-            </div>
-        </div>
-
         <div class="payment-info">
             <h3>ℹ️ Sipariş ve Ödeme Bilgisi</h3>
             <p>Sitemizde sadece <strong>Havale / EFT</strong> ile ödeme kabul edilmektedir. Beğendiğiniz ürünü WhatsApp üzerinden sipariş ettikten sonra size iletilecek olan IBAN numarasına ödeme yapabilirsiniz.</p>
         </div>
 
-        <div class="products-grid" id="productsDisplay"></div>
+        <div class="products-grid" id="productsDisplay">
+            <!-- Ürünler otomatik listelenir -->
+        </div>
     </div>
 
     <script>
-        const ADMIN_USER = "meke";
-        const ADMIN_PASS = "1234";
-
+        // 🛍️ KENDİ GERÇEK ÜRÜNLERİNİZİ BURAYA EKLEYİN / DEĞİŞTİRİN
         let products = [
-            { id: 0, name: "Oversize Siyah Tişört", price: 100, discount: 30, img: "https://picsum.photos/400/500?random=1" },
-            { id: 1, name: "Kargo Cep Pantolon", price: 200, discount: 0, img: "https://picsum.photos/400/500?random=2" }
+            { id: 0, name: "Oversize Siyah Tişört", price: 500, discount: 0, img: "urun1.jpg" },
+            { id: 1, name: "Kargo Cep Pantolon", price: 850, discount: 40, img: "urun2.jpg" },
+            { id: 2, name: "Meke Özel Tasarım Sweatshirt", price: 650, discount: 15, img: "urun3.jpg" },
+            { id: 3, name: "Oversize Kareli Gömlek", price: 450, discount: 0, img: "urun4.jpg" }
         ];
 
+        // Buradaki numaraları yukarıdaki sipariş hatlarıyla aynı yapın (başında 90 olacak şekilde)
         const phoneNumbers = ["905551112233", "905554445566", "905557778899"];
 
         function renderProducts() {
@@ -104,72 +88,28 @@
                 if(prod.discount > 0) {
                     discountBadge = `<div class="discount-badge">%${prod.discount} İNDİRİM</div>`;
                     let discountedPrice = prod.price - (prod.price * prod.discount / 100);
-                    priceHTML = `
-                        <span class="old-price">${prod.price} TL</span>
-                        <span class="current-price">${discountedPrice.toFixed(0)} TL</span>
-                    `;
+                    priceHTML = `<span class="old-price">${prod.price} TL</span><span class="current-price">${discountedPrice.toFixed(0)} TL</span>`;
                 } else {
                     priceHTML = `<span class="current-price">${prod.price} TL</span>`;
                 }
 
                 let selectedPhone = phoneNumbers[index % phoneNumbers.length];
-                let wpMessage = encodeURIComponent('Merhaba Mekegiyim, "' + prod.name + '" ürününüzü sipariş etmek istiyorum.');
-                let wpLink = 'https://wa.me/' + selectedPhone + '?text=' + wpMessage;
+                let wpMessage = encodeURIComponent(`Merhaba Mekegiyim, "${prod.name}" ürününüzü sipariş etmek istiyorum.`);
+                let wpLink = `https://wa.me{selectedPhone}?text=${wpMessage}`;
 
                 grid.innerHTML += `
                     <div class="product-card">
-                        ` + discountBadge + `
-                        <img class="product-img" src="` + prod.img + `" alt="` + prod.name + `">
+                        ${discountBadge}
+                        <img class="product-img" src="${prod.img}" onerror="this.src='https://picsum.photos{index}'" alt="${prod.name}">
                         <div class="product-info">
-                            <div class="product-title">` + prod.name + `</div>
-                            <div class="price-box">` + priceHTML + `</div>
-                            <a href="` + wpLink + `" target="_blank" class="wp-btn">WhatsApp ile Sipariş Et</a>
+                            <div class="product-title">${prod.name}</div>
+                            <div class="price-box">${priceHTML}</div>
+                            <a href="${wpLink}" target="_blank" class="wp-btn">WhatsApp ile Sipariş Et</a>
                         </div>
                     </div>
                 `;
             });
         }
-
-        function toggleAdmin() {
-            let panel = document.getElementById("adminPanel");
-            panel.style.display = panel.style.display === "block" ? "none" : "block";
-        }
-
-        function login() {
-            let u = document.getElementById("username").value;
-            let p = document.getElementById("password").value;
-            if(u === ADMIN_USER && p === ADMIN_PASS) {
-                document.getElementById("loginArea").style.display = "none";
-                document.getElementById("controlArea").style.display = "block";
-                loadProductData();
-            } else {
-                alert("Hatalı kullanıcı adı veya şifre!");
-            }
-        }
-
-        function logout() {
-            document.getElementById("loginArea").style.display = "block";
-            document.getElementById("controlArea").style.display = "none";
-        }
-
-        function loadProductData() {
-            let selectedId = document.getElementById("selectProduct").value;
-            let prod = products.find(p => p.id == selectedId);
-            document.getElementById("newPrice").value = prod.price;
-            document.getElementById("newDiscount").value = prod.discount;
-        }
-
-        function updateProduct() {
-            let selectedId = document.getElementById("selectProduct").value;
-            let prod = products.find(p => p.id == selectedId);
-            
-            prod.price = parseFloat(document.getElementById("newPrice").value);
-            prod.discount = parseInt(document.getElementById("newDiscount").value);
-            
-            renderProducts();
-            alert("Ürün başarıyla güncellendi!");
-        }
-
         renderProducts();
     </script>
 </body>
