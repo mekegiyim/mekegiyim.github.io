@@ -18,11 +18,11 @@
         nav a:hover, nav a.active { background: var(--primary); color: white; }
 
         /* Sayfa Bölümleri */
-        .page-section { display: none; max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .page-section { display: none; max-width: 1200px; margin: 30px auto; padding: 0 20px; box-sizing: border-box; }
         .page-section.active { display: block; }
 
         /* Modern Ürün Kartları */
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; width: 100%; }
         .product-card { background: white; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); overflow: hidden; position: relative; display: flex; flex-direction: column; transition: 0.3s; }
         .product-card:hover { transform: translateY(-5px); }
         
@@ -64,12 +64,12 @@
     <!-- Üst Klasör Menüsü -->
     <header>
         <div class="header-container">
-            <a href="#" class="logo" onclick="switchPage('home')">MEKEGİYİM</a>
+            <a href="#" class="logo" onclick="switchPage('home'); return false;">MEKEGİYİM</a>
             <nav>
-                <a href="#" id="nav-home" class="active" onclick="switchPage('home')">Ana Sayfa</a>
-                <a href="#" id="nav-about" onclick="switchPage('about')">Hakkımızda</a>
-                <a href="#" id="nav-faq" onclick="switchPage('faq')">Merak Edilenler (SSS)</a>
-                <a href="#" id="nav-contact" onclick="switchPage('contact')">İletişim</a>
+                <a href="#" id="nav-home" class="active" onclick="switchPage('home'); return false;">Ana Sayfa</a>
+                <a href="#" id="nav-about" onclick="switchPage('about'); return false;">Hakkımızda</a>
+                <a href="#" id="nav-faq" onclick="switchPage('faq'); return false;">Merak Edilenler (SSS)</a>
+                <a href="#" id="nav-contact" onclick="switchPage('contact'); return false;">İletişim</a>
             </nav>
         </div>
     </header>
@@ -104,18 +104,16 @@
             <h2>Bizimle İletişime Geçin</h2>
             <p>Sipariş hattımız ve sosyal medya hesaplarımız üzerinden bize haftanın her günü ulaşabilirsiniz.</p>
             <div class="contact-list">
-                <!-- TELEFON NUMARALARINIZI BURADAN DEĞİŞTİREBİLİRSİNİZ (Kalıcı olarak) -->
-                <a href="https://wa.me">📞 Sipariş Hattı 1: 0533 833 47 14</a>
-                <a href="https://wa.me">📞 Sipariş Hattı 2: 0536 274 72 07</a>
-                <a href="https://wa.me">📞 Sipariş Hattı 3: 0533 506 31 13</a>
+                <a href="https://wa.me" target="_blank">📞 Sipariş Hattı 1: 0533 833 47 14</a>
+                <a href="https://wa.me" target="_blank">📞 Sipariş Hattı 2: 0536 274 72 07</a>
+                <a href="https://wa.me" target="_blank">📞 Sipariş Hattı 3: 0533 506 31 13</a>
                 <br><br>
-                <!-- INSTAGRAM KULLANICI ADINIZI BURADAN DEĞİŞTİREBİLİRSİNİZ -->
                 <a href="https://instagram.com" target="_blank" class="insta-large">📸 @mekegiyim Instagram'da Takip Et</a>
             </div>
         </div>
     </div>
 
-    <!-- SAĞ ALTTAKİ YÖNETİM PANELİ BUTONU VE EKRANI -->
+    <!-- SAĞ ALTTAKİ YÖNETİM PANELİ BUTONU -->
     <button class="admin-toggle" onclick="toggleAdmin()">⚙️ Yönetim Paneli</button>
     <div id="adminPanel" class="admin-panel">
         <div id="loginArea">
@@ -136,14 +134,10 @@
     </div>
 
     <script>
-        // Yönetim Paneli Giriş Bilgileri
-        const ADMIN_USER = "meke";
-        const ADMIN_PASS = "1234";
-
-        // BURADAKİ SİPARİŞ DAĞITIM NUMARALARINI DEĞİŞTİREBİLİRSİNİZ
+        const ADMIN_USER = "mekegiyim05";
+        const ADMIN_PASS = "kemalmemet05";
         const phoneNumbers = ["905551112233", "905554445566", "905557778899"];
 
-        // ÜRÜNLERİNİZ (Stok kontrolü buradadır. stock: 0 yaparsanız "Stok Tükendi" yazar)
         let products = [
             { id: 0, name: "Oversize Siyah Tişört", price: 500, discount: 0, stock: 10, img: "urun1.jpg" },
             { id: 1, name: "Kargo Cep Pantolon", price: 850, discount: 40, stock: 5, img: "urun2.jpg" },
@@ -154,8 +148,13 @@
         function switchPage(pageId) {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('nav a').forEach(nav => nav.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
-            document.getElementById('nav-' + pageId).classList.add('active');
-            if(pageId === 'home') renderProducts();
+            
+            const targetPage = document.getElementById('page-' + pageId);
+            const targetNav = document.getElementById('nav-' + pageId);
+            
+            if(targetPage) targetPage.classList.add('active');
+            if(targetNav) targetNav.classList.add('active');
         }
 
+        function renderProducts() {
+            const grid = document.getElementById("productsDisplay");
